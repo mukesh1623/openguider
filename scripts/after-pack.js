@@ -1,8 +1,15 @@
 const path = require("path");
-const { rcedit } = require("rcedit");
 
 async function setWindowsExecutableIcon(context) {
   if (context?.electronPlatformName !== "win32") {
+    return;
+  }
+
+  let rcedit;
+  try {
+    ({ rcedit } = require("rcedit"));
+  } catch (_error) {
+    // Skip icon mutation when rcedit is unavailable.
     return;
   }
 
