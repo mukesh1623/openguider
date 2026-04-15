@@ -2,7 +2,8 @@
   "name": "openguider",
   "version": "0.1.0",
   "description": "OpenGuider AI Companion",
-  "author": "mo-tunn",
+  "author": "Metehan Kızılcık",
+  "license": "GPL-3.0-or-later",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -21,7 +22,6 @@
     "@langchain/openai": "^1.4.4",
     "electron-store": "^8.2.0",
     "google-tts-api": "^2.0.2",
-    "keytar": "^7.9.0",
     "ws": "^8.18.0",
     "zod": "^4.3.6"
   },
@@ -94,5 +94,8 @@
         "deb"
       ]
     }
+  },
+  "optionalDependencies": {
+    "keytar": "^7.9.0"
   }
 }

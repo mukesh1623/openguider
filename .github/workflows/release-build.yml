@@ -76,4 +76,12 @@ jobs:
       - name: Publish release with artifacts
         uses: softprops/action-gh-release@v2
         with:
+          name: OpenGuider ${{ github.ref_name }}
+          body: |
+            OpenGuider desktop release.
+
+            Download installers:
+            - Windows: OpenGuider-windows-latest.exe
+            - macOS: OpenGuider-macos-latest.dmg
+            - Linux: OpenGuider-linux-latest.AppImage
           files: artifacts/**/*

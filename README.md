@@ -1,10 +1,16 @@
-Download [here](https://mo-tunn.github.io/OpenGuider/)
-
 # OpenGuider
 
-OpenGuider is an Electron desktop assistant that guides users through UI tasks with:
+Download [here](https://mo-tunn.github.io/OpenGuider/)
 
-> OpenGuider was originally inspired by Clicky.
+![OpenGuider logo](./renderer/assets/logo.png)
+
+![Landing Deploy](https://img.shields.io/github/actions/workflow/status/mo-tunn/OpenGuider/deploy-landing.yml?branch=main&label=landing%20deploy)
+![Release Build](https://img.shields.io/github/actions/workflow/status/mo-tunn/OpenGuider/release-build.yml?label=release%20build)
+![Tests](https://img.shields.io/github/actions/workflow/status/mo-tunn/OpenGuider/multi-platform-test.yml?branch=main&label=tests)
+![Latest Release](https://img.shields.io/github/v/release/mo-tunn/OpenGuider?label=latest%20release)
+![License](https://img.shields.io/github/license/mo-tunn/OpenGuider)
+
+OpenGuider is an Electron desktop assistant that guides users through UI tasks with:
 
 - Multi-provider LLM chat (Claude, OpenAI, Gemini, Groq, OpenRouter, Ollama)
 - Screenshot-aware step-by-step planning
@@ -25,10 +31,8 @@ OpenGuider is an Electron desktop assistant that guides users through UI tasks w
 
 ## Quick Start
 
-1. Install dependencies:
-   - `npm install`
-2. Start the app:
-   - `npm run start`
+1. Install dependencies: `npm install`
+2. Start the app: `npm run start`
 3. Open Settings and configure:
    - AI provider + model + API key
    - Optional voice providers
@@ -45,12 +49,6 @@ OpenGuider is an Electron desktop assistant that guides users through UI tasks w
 - Build only macOS installers (`.dmg` + `.zip`): `npm run dist:mac`
 - Build only Linux packages (`.AppImage` + `.deb`): `npm run dist:linux`
 - Output artifacts are written to `release/`
-
-Installer behavior:
-
-- Windows uses NSIS `oneClick` installer flow.
-- Installer requests elevation automatically when required.
-- Desktop and Start Menu shortcuts are created automatically.
 
 ## Architecture
 
@@ -70,55 +68,26 @@ Installer behavior:
 
 ## GitHub Release Automation
 
-- Push a semantic version tag (example: `v0.2.0`) to trigger multi-platform release builds.
-- Workflow: `.github/workflows/release-build.yml`
-- The workflow builds artifacts on Windows/macOS/Linux and publishes them to the GitHub Release for that tag.
+1. Push a semantic version tag (example: `v0.2.0`).
+2. GitHub Actions runs `.github/workflows/release-build.yml`.
+3. Installers are attached to the release:
+   - `OpenGuider-windows-latest.exe`
+   - `OpenGuider-macos-latest.dmg`
+   - `OpenGuider-linux-latest.AppImage`
 
-## Logging and Crash Reporting
+## License
 
-- JSON structured logs are written under the app user-data logs directory.
-- Log rotation keeps recent files and caps single-file size.
-- Crash hooks capture:
-  - `uncaughtException`
-  - `unhandledRejection`
-  - renderer process crash / gone events
-- Runtime performance telemetry captures:
-  - `ipc.capture-screenshot`
-  - `ipc.start-goal-session`
-  - `ipc.submit-user-message`
-  - `ipc.send-message`
-  - plus screenshot internal timing breakdown (`getSources`, `encode`, cache-hit)
+This project is licensed under the GNU General Public License v3.0.  
+See [`LICENSE`](./LICENSE) for full terms.
 
-## Provider Matrix
+Copyright (C) Metehan Kızılcık
 
-- **LLM**: Claude, OpenAI, Gemini, Groq, OpenRouter, Ollama
-- **STT**: Web Speech, AssemblyAI, Whisper-compatible endpoint
-- **TTS**: Google Translate TTS, OpenAI TTS, ElevenLabs
+If you create a derivative project, keep these GPLv3 basics:
 
-## Platform Readiness
+1. Include the full GPLv3 license text in a `LICENSE` file.
+2. Keep copyright notices (including `Metehan Kızılcık`).
+3. Share source code of distributed modified versions under GPL-compatible terms.
 
-- **Windows**: Fully usable for core AI/STT/TTS flows.
-- **Linux**: Fully usable for core AI/STT/TTS flows.
-- **macOS**: Fully usable for core AI/STT/TTS flows.
+## Acknowledgement
 
-Runtime guard behavior:
-
-- If an unsupported `ttsProvider` value is loaded/saved, settings are normalized to `google`.
-
-## Known Limitations
-
-- UI smoke tests are structural (DOM/id-level), not full browser automation tests.
-- Pointer placement now uses per-display calibration from recent screenshots, but still depends on model output quality.
-- Network/provider errors depend on each provider's API behavior and quotas.
-
-## Test Coverage Included
-
-- Unit:
-  - `parsePointTag`
-  - `normalizePlan`
-  - `extractJSONObject`
-- Integration:
-  - `TaskOrchestrator` single-step manual completion flow
-- UI smoke:
-  - Panel control + onboarding/error container presence
-  - Widget action controls presence
+OpenGuider was originally inspired by Clicky.
