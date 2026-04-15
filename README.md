@@ -2,7 +2,9 @@
 
 Download [here](https://mo-tunn.github.io/OpenGuider/)
 
-![OpenGuider logo](./renderer/assets/logo.png)
+<p align="center">
+  <img src="./renderer/assets/logo.png" alt="OpenGuider logo" width="150">
+</p>
 
 ![Landing Deploy](https://img.shields.io/github/actions/workflow/status/mo-tunn/OpenGuider/deploy-landing.yml?branch=main&label=landing%20deploy)
 ![Release Build](https://img.shields.io/github/actions/workflow/status/mo-tunn/OpenGuider/release-build.yml?label=release%20build)
@@ -19,7 +21,9 @@ OpenGuider is an Electron desktop assistant that guides users through UI tasks w
 
 ## Live Preview
 
-![OpenGuider tutorial](./tutorial.gif)
+<p align="center">
+  <img src="./tutorial.gif" alt="OpenGuider tutorial" width="360">
+</p>
 
 ## Downloads
 
