@@ -28,8 +28,17 @@ jobs:
       - name: Install dependencies
         run: npm ci --omit=optional
 
-      - name: Build platform artifacts
-        run: npm run dist
+      - name: Build Windows artifact
+        if: matrix.os == 'windows-latest'
+        run: npm run dist:win
+
+      - name: Build macOS artifact
+        if: matrix.os == 'macos-latest'
+        run: npx electron-builder --mac zip
+
+      - name: Build Linux artifact
+        if: matrix.os == 'ubuntu-latest'
+        run: npx electron-builder --linux AppImage
 
       - name: Upload release artifacts
         uses: actions/upload-artifact@v4
@@ -58,19 +67,19 @@ jobs:
           mkdir -p artifacts/aliases
 
           WINDOWS_EXE="$(find artifacts -type f -name '*.exe' ! -name '*unins*' | head -n 1)"
-          MACOS_DMG="$(find artifacts -type f -name '*.dmg' | head -n 1)"
+          MACOS_ZIP="$(find artifacts -type f -name '*.zip' | head -n 1)"
           LINUX_APPIMAGE="$(find artifacts -type f -name '*.AppImage' | head -n 1)"
 
-          if [ -z "${WINDOWS_EXE}" ] || [ -z "${MACOS_DMG}" ] || [ -z "${LINUX_APPIMAGE}" ]; then
+          if [ -z "${WINDOWS_EXE}" ] || [ -z "${MACOS_ZIP}" ] || [ -z "${LINUX_APPIMAGE}" ]; then
             echo "Could not locate one or more platform installer files."
             echo "WINDOWS_EXE=${WINDOWS_EXE:-missing}"
-            echo "MACOS_DMG=${MACOS_DMG:-missing}"
+            echo "MACOS_ZIP=${MACOS_ZIP:-missing}"
             echo "LINUX_APPIMAGE=${LINUX_APPIMAGE:-missing}"
             exit 1
           fi
 
           cp "${WINDOWS_EXE}" artifacts/aliases/OpenGuider-windows-latest.exe
-          cp "${MACOS_DMG}" artifacts/aliases/OpenGuider-macos-latest.dmg
+          cp "${MACOS_ZIP}" artifacts/aliases/OpenGuider-macos-latest.zip
           cp "${LINUX_APPIMAGE}" artifacts/aliases/OpenGuider-linux-latest.AppImage
 
       - name: Publish release with artifacts
@@ -82,6 +91,6 @@ jobs:
 
             Download installers:
             - Windows: OpenGuider-windows-latest.exe
-            - macOS: OpenGuider-macos-latest.dmg
+            - macOS: OpenGuider-macos-latest.zip
             - Linux: OpenGuider-linux-latest.AppImage
           files: artifacts/**/*
