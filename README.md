@@ -95,7 +95,6 @@ You can run chat-only, voice-only, or hybrid flows depending on your setup.
 - Latest release: [https://github.com/mo-tunn/OpenGuider/releases/latest](https://github.com/mo-tunn/OpenGuider/releases/latest)
 - Windows installer: [OpenGuider-windows-setup-latest.exe](https://github.com/mo-tunn/OpenGuider/releases/latest/download/OpenGuider-windows-setup-latest.exe)
 - macOS installer (DMG): [OpenGuider-macos-installer-latest.dmg](https://github.com/mo-tunn/OpenGuider/releases/latest/download/OpenGuider-macos-installer-latest.dmg)
-- macOS package (PKG): [OpenGuider-macos-package-latest.pkg](https://github.com/mo-tunn/OpenGuider/releases/latest/download/OpenGuider-macos-package-latest.pkg)
 - Linux installer: [OpenGuider-linux-latest.zip](https://github.com/mo-tunn/OpenGuider/releases/latest/download/OpenGuider-linux-latest.zip)
 
 ## Installation
@@ -105,7 +104,7 @@ You can run chat-only, voice-only, or hybrid flows depending on your setup.
 1. Open the latest release page: [https://github.com/mo-tunn/OpenGuider/releases/latest](https://github.com/mo-tunn/OpenGuider/releases/latest)
 2. Download your platform artifact:
    - Windows: `OpenGuider-windows-setup-latest.exe`
-   - macOS: `OpenGuider-macos-installer-latest.dmg` or `OpenGuider-macos-package-latest.pkg`
+   - macOS: `OpenGuider-macos-installer-latest.dmg`
    - Linux: `OpenGuider-linux-latest.zip`
 3. Extract and run the app.
 
@@ -296,7 +295,7 @@ Examples:
 
 - Build all platform targets on your current OS: `npm run dist`
 - Build only Windows NSIS installer (`.exe`): `npm run dist:win`
-- Build only macOS installers (`.dmg` + `.pkg`): `npm run dist:mac`
+- Build only macOS installer (`.dmg`): `npm run dist:mac`
 - Build only Linux packages (`.AppImage` + `.deb`): `npm run dist:linux`
 - Output artifacts are written to `release/`
 
@@ -348,7 +347,6 @@ flowchart LR
 3. Installers are attached to the release:
    - `OpenGuider-windows-setup-latest.exe`
    - `OpenGuider-macos-installer-latest.dmg`
-   - `OpenGuider-macos-package-latest.pkg`
    - `OpenGuider-linux-latest.zip`
 
 ## License

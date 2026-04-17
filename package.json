@@ -1,6 +1,6 @@
 {
   "name": "openguider",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "OpenGuider AI Companion",
   "author": "Metehan Kızılcık",
   "license": "GPL-3.0-or-later",
@@ -12,7 +12,7 @@
     "pack": "electron-builder --dir",
     "dist": "cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder",
     "dist:win": "cross-env CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --win nsis",
-    "dist:mac": "electron-builder --mac dmg pkg",
+    "dist:mac": "electron-builder --mac dmg",
     "dist:linux": "electron-builder --linux AppImage deb"
   },
   "dependencies": {
@@ -56,8 +56,7 @@
       "icon": "renderer/assets/logo.ico",
       "category": "public.app-category.productivity",
       "target": [
-        "dmg",
-        "pkg"
+        "dmg"
       ],
       "hardenedRuntime": false,
       "gatekeeperAssess": false
