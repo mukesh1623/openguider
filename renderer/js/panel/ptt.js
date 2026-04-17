@@ -5,7 +5,6 @@ export function createPttController({
   messaging,
   state,
   ui,
-  win = window,
 }) {
   function startPTT() {
     if (state.isRecording()) {
@@ -19,12 +18,10 @@ export function createPttController({
     dom.waveform.style.display = "flex";
     dom.pttBtn.childNodes[0].textContent = "";
     api.send("update-widget-state", "listening");
-    log("stt:start", state.getSetting("sttProvider") || "webspeech");
+    const sttProvider = resolveSttProvider(state.getSetting("sttProvider"));
+    log("stt:start", sttProvider);
 
-    const sttProvider = state.getSetting("sttProvider") || "webspeech";
-    if (sttProvider === "webspeech") {
-      startWebSpeech();
-    } else if (sttProvider === "assemblyai") {
+    if (sttProvider === "assemblyai") {
       startAssemblyAI();
     } else if (sttProvider === "whisper") {
       startWhisper();
@@ -55,50 +52,9 @@ export function createPttController({
     log("stt:stop");
   }
 
-  function startWebSpeech() {
-    const SpeechRecognitionCtor = win.SpeechRecognition || win.webkitSpeechRecognition;
-    if (!SpeechRecognitionCtor) {
-      ui.showToast("Web Speech API not supported", true);
-      return;
-    }
-
-    const recognition = new SpeechRecognitionCtor();
-    recognition.lang = state.getSetting("sttLanguage") || "en-US";
-    recognition.interimResults = true;
-    recognition.continuous = false;
-
-    let finalTranscript = "";
-
-    recognition.onresult = (event) => {
-      let interim = "";
-      for (let index = event.resultIndex; index < event.results.length; index += 1) {
-        if (event.results[index].isFinal) {
-          finalTranscript += event.results[index][0].transcript;
-        } else {
-          interim += event.results[index][0].transcript;
-        }
-      }
-      dom.textInput.value = finalTranscript + interim;
-    };
-
-    recognition.onend = () => {
-      const text = finalTranscript.trim() || dom.textInput.value.trim();
-      if (text) {
-        messaging.sendMessage(text);
-      } else {
-        dom.textInput.value = "";
-      }
-      stopPTT();
-    };
-
-    recognition.onerror = (event) => {
-      ui.showToast("Speech error: " + event.error, true);
-      log("stt:webspeech error", event.error);
-      stopPTT();
-    };
-
-    state.setRecognition(recognition);
-    recognition.start();
+  function resolveSttProvider(provider) {
+    if (provider === "whisper") return "whisper";
+    return "assemblyai";
   }
 
   async function startAssemblyAI() {

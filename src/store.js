@@ -30,7 +30,7 @@ const schema = {
 
   ollamaUrl:    { type:"string", default:"http://localhost:11434" },
   ollamaModelCustom: { type:"string", default:"" },
-  sttProvider:  { type:"string", enum:["webspeech","assemblyai","whisper"], default:"webspeech" },
+  sttProvider:  { type:"string", enum:["assemblyai","whisper"], default:"assemblyai" },
   assemblyaiApiKey: { type:"string", default:"" },
   whisperApiKey:    { type:"string", default:"" },
   whisperBaseUrl:   { type:"string", default:"https://api.openai.com/v1" },

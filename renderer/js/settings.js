@@ -62,7 +62,7 @@ async function init() {
   document.getElementById("skipCurrentStepShortcut").value = settings.skipCurrentStepShortcut || "Ctrl+Alt+6";
   document.getElementById("regenerateCurrentStepShortcut").value = settings.regenerateCurrentStepShortcut || "Ctrl+Alt+7";
 
-  setSelectValue("sttProvider", settings.sttProvider || "webspeech");
+  setSelectValue("sttProvider", normalizeSttProvider(settings.sttProvider));
   setSelectValue("ttsProvider", settings.ttsProvider || "google");
 
   document.getElementById("elevenlabsApiKey").value  = settings.elevenlabsApiKey  || "";
@@ -106,6 +106,13 @@ function activateProvider(provider) {
 function setSelectValue(id, value) {
   const el = document.getElementById(id);
   if (el) el.value = value;
+}
+
+function normalizeSttProvider(provider) {
+  if (provider === "whisper") return "whisper";
+  if (provider === "assemblyai") return "assemblyai";
+  // Legacy values like "webspeech" are remapped to assemblyai.
+  return "assemblyai";
 }
 
 function normalizeTtsVolume(value) {
@@ -381,7 +388,7 @@ async function saveSettings() {
     openaiTtsVoice:          document.getElementById("openaiTtsVoice").value.trim() || "nova",
     ttsRate:                 normalizeTtsRate(document.getElementById("ttsRate").value),
     ttsVolume:               normalizeTtsVolume(document.getElementById("ttsVolume").value),
-    sttProvider:             document.getElementById("sttProvider").value,
+    sttProvider:             normalizeSttProvider(document.getElementById("sttProvider").value),
     sttLanguage:             document.getElementById("sttLanguage").value,
     ttsProvider:             document.getElementById("ttsProvider").value,
     ttsEnabled:              document.getElementById("ttsEnabled").checked,

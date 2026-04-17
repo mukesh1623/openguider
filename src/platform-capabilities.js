@@ -14,7 +14,6 @@ function getPlatformCapabilities(platform = process.platform) {
       elevenlabs: true,
     },
     stt: {
-      webspeech: true,
       assemblyai: true,
       whisper: true,
     },

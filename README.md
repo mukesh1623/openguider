@@ -72,7 +72,6 @@ This is the core of "guide me while I use my apps" behavior.
 
 Speech-to-text options:
 
-- Web Speech
 - AssemblyAI
 - Whisper-compatible endpoints
 
