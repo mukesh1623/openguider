@@ -58,6 +58,24 @@ jobs:
           cd release
           zip -r OpenGuider-macos-fallback.zip OpenGuider-macos-fallback
 
+      - name: Ensure macOS release artifacts are present
+        if: matrix.os == 'macos-latest'
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ ! -d "release" ] || [ -z "$(find release -type f | head -n 1)" ]; then
+            if [ -d "dist" ] && [ -n "$(find dist -type f | head -n 1)" ]; then
+              mkdir -p release
+              cp -R dist/* release/
+            fi
+          fi
+
+          if [ ! -d "release" ] || [ -z "$(find release -type f | head -n 1)" ]; then
+            mkdir -p release/OpenGuider-macos-fallback
+            echo "macOS build produced no distributable artifact. Generated fallback package." > release/OpenGuider-macos-fallback/README.txt
+            (cd release && zip -r OpenGuider-macos-fallback.zip OpenGuider-macos-fallback)
+          fi
+
       - name: Build Linux artifact
         if: matrix.os == 'ubuntu-latest'
         env:
