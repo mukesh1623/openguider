@@ -31,6 +31,9 @@ jobs:
           cp landing/landing.js site/landing.js
           cp landing/favicon.svg site/favicon.svg
           cp tutorial.gif site/tutorial.gif
+          mkdir -p site/docs
+          cp "docs/OpenGuider - Configuration(TR).pdf" "site/docs/OpenGuider - Configuration(TR).pdf"
+          cp "docs/OpenGuider - Configuration (EN) .pdf" "site/docs/OpenGuider - Configuration (EN) .pdf"
 
           cp renderer/assets/logo.png site/assets/logo.png
           cp renderer/assets/half-opened.png site/assets/half-opened.png

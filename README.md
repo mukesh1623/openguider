@@ -19,6 +19,19 @@ OpenGuider is an Electron desktop AI assistant designed to help you complete rea
 
 It combines chat, planning, screenshot context, pointer hints, and optional voice features in one desktop workflow.
 
+## Quick Configuration Guides (PDF)
+
+- Turkish guide: [OpenGuider - Configuration (TR)](./docs/OpenGuider%20-%20Configuration%28TR%29.pdf)
+- English guide: [OpenGuider - Configuration (EN)](./docs/OpenGuider%20-%20Configuration%20%28EN%29%20.pdf)
+- The landing page `Configure` section also includes direct buttons for both PDF guides.
+
+Recommended daily low-cost stack from these guides:
+
+- AI Provider: OpenRouter
+- Model: `google/gemini-3.1-flash-image-preview`
+- STT: Groq `whisper-large-v3-turbo`
+- TTS: ElevenLabs Voice IDs(`pNInz6obpgDQGcFmaJgB` / `EXAVITQu4vr4xnSDxMaL`)
+
 ## What OpenGuider Does
 
 - Converts your goal into a step-by-step execution plan.
@@ -139,6 +152,7 @@ Choose a model based on your use case:
 
 - Fast and cheap for short daily guidance.
 - Stronger reasoning model for complex multi-step planning.
+- Recommended default for daily usage: `google/gemini-3.1-flash-image-preview` (via OpenRouter).
 
 If model output quality is inconsistent, switch to a more capable model.
 
@@ -151,11 +165,21 @@ If you want microphone-driven workflows:
 3. Verify system microphone permissions.
 4. Run a short recognition test.
 
+Practical low-cost default:
+
+- STT provider: Groq
+- STT model: `whisper-large-v3-turbo`
+
 For spoken responses:
 
 1. Select TTS provider.
 2. Pick voice.
 3. Test output volume and speaking speed.
+
+Suggested ElevenLabs voice IDs:
+
+- `pNInz6obpgDQGcFmaJgB` (male)
+- `EXAVITQu4vr4xnSDxMaL` (female)
 
 ### Step 4: Validate the Setup
 
