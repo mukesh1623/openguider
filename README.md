@@ -21,16 +21,8 @@ It combines chat, planning, screenshot context, pointer hints, and optional voic
 
 ## Quick Configuration Guides (PDF)
 
-- Turkish guide: [OpenGuider - Configuration (TR)](./docs/OpenGuider%20-%20Configuration%28TR%29.pdf)
-- English guide: [OpenGuider - Configuration (EN)](./docs/OpenGuider%20-%20Configuration%20%28EN%29%20.pdf)
-- The landing page `Configure` section also includes direct buttons for both PDF guides.
-
-Recommended daily low-cost stack from these guides:
-
-- AI Provider: OpenRouter
-- Model: `google/gemini-3.1-flash-image-preview`
-- STT: Groq `whisper-large-v3-turbo`
-- TTS: ElevenLabs Voice IDs(`pNInz6obpgDQGcFmaJgB` / `EXAVITQu4vr4xnSDxMaL`)
+- Turkish guide: [OpenGuider - Configuration (TR)](https://mo-tunn.github.io/OpenGuider/docs/OpenGuider%20-%20Configuration%28TR%29.pdf)
+- English guide: [OpenGuider - Configuration (EN)](https://mo-tunn.github.io/OpenGuider/docs/OpenGuider%20-%20Configuration%20%28EN%29%20.pdf)
 
 ## What OpenGuider Does
 
