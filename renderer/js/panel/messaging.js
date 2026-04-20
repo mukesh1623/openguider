@@ -7,6 +7,38 @@ export function createMessagingController({
   ui,
 }) {
   let syncQueue = Promise.resolve();
+  let currentAbortController = null;
+  let requestTimeoutId = null;
+
+  function cancelMessage() {
+    if (!state.isStreaming()) return;
+
+    if (currentAbortController) {
+      currentAbortController.abort();
+      currentAbortController = null;
+    }
+
+    if (requestTimeoutId) {
+      clearTimeout(requestTimeoutId);
+      requestTimeoutId = null;
+    }
+
+    log("ai:cancel-message invoke");
+    api.invoke("abort-message").catch(err => log("ipc:abort-message error", err));
+
+    state.setStreaming(false);
+    dom.sendBtn.classList.remove("hidden");
+    const stopBtn = doc.getElementById("stop-btn");
+    if (stopBtn) stopBtn.classList.add("hidden");
+    dom.sendBtn.disabled = false;
+    
+    ui.renderAgentState("idle");
+    ui.removeAllTypingIndicators();
+
+    if (state.getStreamingBubble()) {
+      state.clearStreamingSession();
+    }
+  }
 
   function syncSession(session) {
     syncQueue = syncQueue.then(() => syncSessionInternal(session)).catch((error) => {
@@ -93,8 +125,22 @@ export function createMessagingController({
     dom.textInput.value = "";
     dom.textInput.style.height = "auto";
     state.setStreaming(true);
+    
+    dom.sendBtn.classList.add("hidden");
+    const stopBtn = doc.getElementById("stop-btn");
+    if (stopBtn) stopBtn.classList.remove("hidden");
     dom.sendBtn.disabled = true;
+    
     ui.renderAgentState("thinking");
+
+    currentAbortController = new AbortController();
+    requestTimeoutId = window.setTimeout(() => {
+      if (state.isStreaming()) {
+        log("ai:send-message timeout 60s triggered");
+        cancelMessage();
+        ui.showToast("Request timed out", true);
+      }
+    }, 60000);
 
     let typingId = null;
     log("ai:send-message start", {
@@ -128,8 +174,6 @@ export function createMessagingController({
     } catch (error) {
       onAIError(error.message);
     } finally {
-      state.setStreaming(false);
-      dom.sendBtn.disabled = false;
       if (typingId !== null) {
         ui.removeTypingIndicator(typingId);
       }
@@ -151,7 +195,14 @@ export function createMessagingController({
 
   function onAIDone(parsed) {
     const result = parsed || {};
+    if (requestTimeoutId) {
+      clearTimeout(requestTimeoutId);
+      requestTimeoutId = null;
+    }
     state.setStreaming(false);
+    dom.sendBtn.classList.remove("hidden");
+    const stopBtn = doc.getElementById("stop-btn");
+    if (stopBtn) stopBtn.classList.add("hidden");
     dom.sendBtn.disabled = false;
     ui.renderAgentState("idle");
 
@@ -189,7 +240,14 @@ export function createMessagingController({
       ? { message: errorMessage, code: "unknown_error", action: "open-settings", requestId: "" }
       : (errorMessage || {});
     const safeMessage = payload.message || "Unexpected error";
+    if (requestTimeoutId) {
+      clearTimeout(requestTimeoutId);
+      requestTimeoutId = null;
+    }
     state.setStreaming(false);
+    dom.sendBtn.classList.remove("hidden");
+    const stopBtn = doc.getElementById("stop-btn");
+    if (stopBtn) stopBtn.classList.add("hidden");
     dom.sendBtn.disabled = false;
     ui.renderAgentState("idle");
     ui.removeAllTypingIndicators();
@@ -222,5 +280,6 @@ export function createMessagingController({
     onAIDone,
     onAIError,
     sendMessage,
+    cancelMessage,
   };
 }

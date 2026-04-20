@@ -73,6 +73,12 @@ export function createPanelController({
   }
 
   function bindEvents() {
+    dom.textInput.addEventListener("focus", () => {
+      if (state.isStreaming()) {
+        messaging.cancelMessage();
+      }
+    });
+
     dom.textInput.addEventListener("keydown", (event) => {
       if (event.key === "Enter" && !event.shiftKey) {
         event.preventDefault();
@@ -86,6 +92,10 @@ export function createPanelController({
     });
 
     dom.sendBtn.addEventListener("click", messaging.sendMessage);
+    const stopBtn = doc.getElementById("stop-btn");
+    if (stopBtn) {
+      stopBtn.addEventListener("click", messaging.cancelMessage);
+    }
     dom.btnPlanPrev.addEventListener("click", () => api.invoke("previous-step"));
     dom.btnPlanDone.addEventListener("click", () => api.invoke("mark-step-done"));
     dom.btnPlanSkip.addEventListener("click", () => api.invoke("skip-current-step"));
