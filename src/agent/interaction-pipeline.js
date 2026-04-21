@@ -149,14 +149,15 @@ class InteractionPipeline {
         const matched = elementResolver.findMatchingElements(label, this.uiElements);
         logPostLayer(`Matched ${matched.length} elements for label "${label}"`);
         if (matched.length > 0) {
-          // LLM coordinate can be slightly off. If there's 1 exact match on screen, snap aggressively up to 200px.
-          // Otherwise use a default tolerance of 100px.
-          const customTolerance = matched.length === 1 ? 200 : 100;
-          const snapResult = elementResolver.snapToNearestElement(coordinate, matched, customTolerance);
-          if (snapResult) {
+          // Disable aggressive snapping - UI detection is too unreliable.
+          // Only trust raw LLM coordinates. Verification is used for confidence scoring only.
+          const snapResult = elementResolver.snapToNearestElement(coordinate, matched, 30);
+          if (snapResult && snapResult.distance <= 30) {
             snapped = snapResult;
             validatedCoordinate = snapResult.snappedCoordinate;
             logPostLayer(`Snapped to element: (${validatedCoordinate.x}, ${validatedCoordinate.y}), dist=${snapResult.distance.toFixed(1)}px`);
+          } else {
+            logPostLayer(`Snap distance too large or no match, using raw coords (${coordinate.x}, ${coordinate.y})`);
           }
         }
       }
@@ -193,10 +194,10 @@ class InteractionPipeline {
 
   calculateConfidence(options = {}) {
     const { boundsCheck, verification, snapped } = options;
-    let confidence = 0.5;
-    if (boundsCheck?.valid) confidence += 0.2;
-    if (verification?.verified) confidence += 0.2;
-    if (snapped) confidence += 0.1;
+    // Prioritize raw LLM coords - verification is only for quality indication.
+    let confidence = 0.7;
+    if (boundsCheck?.valid) confidence += 0.15;
+    if (verification?.verified && verification.score > 0.8) confidence += 0.15;
     return Math.min(1, Math.max(0, confidence));
   }
 

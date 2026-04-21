@@ -34,7 +34,7 @@ function stringSimilarity(a, b) {
 }
 
 async function verifyCoordinateWithElements(coordinate, label, elements, options = {}) {
-  const { threshold = DEFAULT_THRESHOLD, tolerance = 50 } = options;
+  const { threshold = DEFAULT_THRESHOLD, tolerance = 100 } = options;
   if (!coordinate) {
     return { verified: false, reason: "no coordinate provided", matches: [] };
   }
