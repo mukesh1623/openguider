@@ -339,6 +339,54 @@ async function streamGroq({ text, images, history, settings, onChunk, signal }) 
 
 
 
+// ── Azure OpenAI ─────────────────────────────────────────────────────────────
+async function streamAzureOpenAI({ text, images, history, settings, onChunk, signal }) {
+  // Azure OpenAI uses a different auth header (api-key) and URL format than standard OpenAI.
+  const baseUrl = (settings.azureBaseUrl || "").replace(/\/$/, "");
+  if (!baseUrl) throw new Error("Azure OpenAI endpoint is not configured. Set it in Settings.");
+
+  const deployment = settings.aiModel || settings.azureDeployment || "gpt-4o";
+  const apiVersion = settings.azureApiVersion || "2024-12-01-preview";
+  const url = `${baseUrl}/openai/deployments/${deployment}/chat/completions?api-version=${apiVersion}`;
+
+  const systemPrompt = settings.systemPromptOverride || DEFAULT_SYSTEM_PROMPT;
+  const messages = [{ role: "system", content: systemPrompt }];
+  for (const h of (history || [])) messages.push({ role: h.role, content: h.content });
+
+  const userContent = [];
+  for (const img of (images || [])) {
+    userContent.push({ type: "image_url", image_url: { url: `data:image/jpeg;base64,${img.base64Jpeg}` } });
+    userContent.push({ type: "text", text: `[${img.label}]` });
+  }
+  userContent.push({ type: "text", text });
+  messages.push({ role: "user", content: userContent.length === 1 ? text : userContent });
+
+  const resp = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "api-key": settings.azureApiKey,
+    },
+    signal,
+    body: JSON.stringify({ stream: true, messages }),
+  });
+
+  if (!resp.ok) throw new Error(`Azure OpenAI error ${resp.status}: ${await resp.text()}`);
+
+  let fullText = "";
+  for await (const line of readSSELines(resp.body)) {
+    if (!line.startsWith("data:")) continue;
+    const data = line.slice(5).trim();
+    if (data === "[DONE]") break;
+    try {
+      const parsed = JSON.parse(data);
+      const chunk = parsed?.choices?.[0]?.delta?.content || "";
+      if (chunk) { fullText += chunk; onChunk(chunk); }
+    } catch {}
+  }
+  return fullText;
+}
+
 // ── Ollama ────────────────────────────────────────────────────────────────────
 async function streamOllama({ text, images, history, settings, onChunk, signal }) {
   const baseUrl = settings.ollamaUrl || "http://localhost:11434";
@@ -459,6 +507,7 @@ async function streamAIResponse({ text, images, history, settings, onChunk, sign
     case "openrouter": return streamOpenRouter({ text, images, history, settings, onChunk, signal });
     case "gemini":     return streamGemini({ text, images, history, settings, onChunk, signal });
     case "groq":       return streamGroq({ text, images, history, settings, onChunk, signal });
+    case "azure":      return streamAzureOpenAI({ text, images, history, settings, onChunk, signal });
     case "ollama":     return streamOllama({ text, images, history, settings, onChunk, signal });
     default:           return streamClaude({ text, images, history, settings, onChunk, signal });
   }

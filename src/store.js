@@ -1,6 +1,6 @@
 const Store = require("electron-store");
 const schema = {
-  aiProvider:   { type:"string", enum:["claude","openai","gemini","groq","ollama","openrouter"], default:"claude" },
+  aiProvider:   { type:"string", enum:["claude","openai","azure","gemini","groq","ollama","openrouter"], default:"claude" },
   aiModel:      { type:"string", default:"" },
   claudeApiKey:     { type:"string", default:"" },
   claudeModelCustom: { type:"string", default:"" },
@@ -9,8 +9,14 @@ const schema = {
 
   openaiApiKey:     { type:"string", default:"" },
   openaiModelCustom: { type:"string", default:"" },
-  // Custom base URL for OpenAI (e.g. Azure OpenAI or local proxy); defaults to official OpenAI endpoint
+  // Custom base URL for OpenAI (e.g. local proxy); defaults to official OpenAI endpoint
   openaiBaseUrl:    { type:"string", default:"https://api.openai.com/v1" },
+
+  azureApiKey:      { type:"string", default:"" },
+  azureDeployment:  { type:"string", default:"" },
+  // Azure OpenAI resource endpoint (e.g. https://my-resource.openai.azure.com)
+  azureBaseUrl:     { type:"string", default:"" },
+  azureApiVersion:  { type:"string", default:"2024-12-01-preview" },
 
   geminiApiKey:     { type:"string", default:"" },
   geminiModelCustom: { type:"string", default:"" },

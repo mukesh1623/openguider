@@ -36,6 +36,10 @@ async function init() {
   document.getElementById("openaiApiKey").value      = settings.openaiApiKey          || "";
   document.getElementById("openaiModel").value       = settings.openaiModelCustom     || "";
   document.getElementById("openaiBaseUrl").value     = settings.openaiBaseUrl         || "https://api.openai.com/v1";
+  document.getElementById("azureApiKey").value       = settings.azureApiKey           || "";
+  document.getElementById("azureDeployment").value   = settings.azureDeployment       || "";
+  document.getElementById("azureBaseUrl").value      = settings.azureBaseUrl          || "";
+  document.getElementById("azureApiVersion").value   = settings.azureApiVersion       || "2024-12-01-preview";
   document.getElementById("geminiApiKey").value      = settings.geminiApiKey          || "";
   document.getElementById("geminiModel").value       = settings.geminiModelCustom     || "";
   document.getElementById("geminiBaseUrl").value     = settings.geminiBaseUrl         || "https://generativelanguage.googleapis.com/v1beta";
@@ -348,6 +352,7 @@ async function saveSettings() {
   const modelMap = {
     claude:     document.getElementById("claudeModel").value.trim(),
     openai:     document.getElementById("openaiModel").value.trim(),
+    azure:      document.getElementById("azureDeployment").value.trim(),
     gemini:     document.getElementById("geminiModel").value.trim(),
     groq:       document.getElementById("groqModel").value.trim(),
     openrouter: document.getElementById("openrouterModel").value.trim(),
@@ -369,6 +374,10 @@ async function saveSettings() {
     claudeBaseUrl:           document.getElementById("claudeBaseUrl").value.trim()        || "https://api.anthropic.com",
     openaiApiKey:            document.getElementById("openaiApiKey").value.trim(),
     openaiBaseUrl:           document.getElementById("openaiBaseUrl").value.trim()        || "https://api.openai.com/v1",
+    azureApiKey:             document.getElementById("azureApiKey").value.trim(),
+    azureDeployment:         document.getElementById("azureDeployment").value.trim(),
+    azureBaseUrl:            document.getElementById("azureBaseUrl").value.trim(),
+    azureApiVersion:         document.getElementById("azureApiVersion").value.trim()      || "2024-12-01-preview",
     geminiApiKey:            document.getElementById("geminiApiKey").value.trim(),
     geminiBaseUrl:           document.getElementById("geminiBaseUrl").value.trim()        || "https://generativelanguage.googleapis.com/v1beta",
     groqApiKey:              document.getElementById("groqApiKey").value.trim(),

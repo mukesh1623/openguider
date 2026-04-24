@@ -30,6 +30,7 @@
           <select class="form-select" id="providerSelect">
             <option value="claude">Claude (Anthropic)</option>
             <option value="openai">OpenAI</option>
+            <option value="azure">Azure OpenAI</option>
             <option value="gemini">Gemini (Google)</option>
             <option value="openrouter">OpenRouter</option>
             <option value="groq">Groq</option>
@@ -68,6 +69,28 @@
             <label>Base URL</label>
             <input class="form-input" id="openaiBaseUrl" type="url" placeholder="https://api.openai.com/v1"/>
             <span class="hint">Leave default for official OpenAI API. Change only for an OpenAI-compatible proxy endpoint.</span>
+          </div>
+        </div>
+
+        <div class="provider-section" id="section-azure">
+          <div class="form-group">
+            <label>API Key</label>
+            <input class="form-input password" id="azureApiKey" type="password" placeholder="Azure OpenAI API key"/>
+          </div>
+          <div class="form-group">
+            <label>Deployment Name</label>
+            <input class="form-input" id="azureDeployment" type="text" placeholder="e.g. gpt-4o, gpt-4o-mini"/>
+            <span class="hint">The deployment name from your Azure OpenAI resource. This is used as the model.</span>
+          </div>
+          <div class="form-group">
+            <label>Endpoint URL</label>
+            <input class="form-input" id="azureBaseUrl" type="url" placeholder="https://your-resource.openai.azure.com"/>
+            <span class="hint">Your Azure OpenAI resource endpoint (from Azure Portal).</span>
+          </div>
+          <div class="form-group">
+            <label>API Version</label>
+            <input class="form-input" id="azureApiVersion" type="text" placeholder="2024-12-01-preview"/>
+            <span class="hint">Leave default unless you need a specific API version.</span>
           </div>
         </div>
 

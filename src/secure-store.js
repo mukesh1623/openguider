@@ -3,6 +3,7 @@ const ElectronStore = require("electron-store");
 const SECRET_KEYS = [
   "claudeApiKey",
   "openaiApiKey",
+  "azureApiKey",
   "geminiApiKey",
   "groqApiKey",
   "openrouterApiKey",
